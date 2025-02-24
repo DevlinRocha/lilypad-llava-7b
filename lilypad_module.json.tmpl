@@ -9,7 +9,9 @@
         "Entrypoint": [
           "/app/src/run_model",
           "--prompt", {{ .prompt }}
-          {{ if .images }} "--images", {{ .images }} {{ end }}
+          {{ if .images }}, "--images" {{ .images }} {{ end }}
+          {{ if .temperature }}, "--temperature", {{ .temperature }} {{ end }}
+          {{ if .max_tokens }}, "--max_tokens", {{ .max_tokens }} {{ end }}
         ],
         "Image": "devlinrocha/llava-7b:v0.0.1"
       },
