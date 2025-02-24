@@ -11,13 +11,13 @@ echo "Input: $1" >&2
 
 # Parse command-line arguments
 while [[ $# -gt 0 ]]; do
-    case "$1" in
+    case $1 in
     --prompt)
-        PROMPT="$2"
+        PROMPT=$2
         shift 2
         ;;
     --images)
-        IMAGES="$2"
+        IMAGES=$2
         shift 2
         ;;
     *)
@@ -26,6 +26,36 @@ while [[ $# -gt 0 ]]; do
         ;;
     esac
 done
+
+encode_image() {
+    local image_path=$1
+    local output_file="${image_path%.*}.base64.txt"
+
+    # Check if the image file exists
+    if [ ! -f $image_path ]; then
+        echo "Error: Image file '$image_path' does not exist" >&2
+        exit 1
+    fi
+
+    # Encode the image content to base64
+    base64 <$image_path >$output_file
+
+    echo "Image encoded and saved as $output_file"
+}
+
+# Check if images path is a file or directory
+if [ -f $IMAGES ]; then
+    encode_image $IMAGES
+elif [ -d $IMAGES ]; then
+    # Process all image files in the directory
+    echo "Processing images in directory: $IMAGES"
+    for image in $IMAGES/*.{png,jpg,jpeg}; do
+        encode_image $image
+    done
+else
+    echo "Error: Images path '$IMAGES' does not exist or is not accessible" >&2
+    exit 1
+fi
 
 # Extract values from input JSON with defaults
 messages="[{\"role\": \"user\", \"content\": \"$PROMPT\"}]"
