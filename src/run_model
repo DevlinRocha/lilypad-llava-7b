@@ -45,7 +45,7 @@ fi
 
 echo "Prompt: $prompt" >&2
 
-if [[ -z "$system" ]]; then
+if [ -z "$system" ]; then
     messages=(
         "[{\"role\": \"user\", \"content\": \"$prompt\"}]"
     )
@@ -61,22 +61,8 @@ request=$(
     cat <<EOF
 {
   "model": "$MODEL_ID",
-  "messages": $messages,
+  "prompt": $prompt,
   "stream": false,
-  "options": {
-    "mirostat": $mirostat,
-    "mirostat_eta": $mirostat_eta,
-    "mirostat_tau": $mirostat_tau,
-    "num_ctx": $num_ctx,
-    "repeat_last_n": $repeat_last_n,
-    "repeat_penalty": $repeat_penalty,
-    "temperature": $temperature,
-    "seed": $seed,
-    "num_predict": $num_predict,
-    "top_k": $top_k,
-    "top_p": $top_p,
-    "min_p": $min_p
-  }
 }
 EOF
 )
@@ -103,7 +89,7 @@ echo "Ollama server started" >&2
 
 # Make the API call to Ollama's chat endpoint
 echo "Making request to Ollama..." >&2
-response=$(curl -s http://127.0.0.1:11434/api/chat \
+response=$(curl -s http://127.0.0.1:11434/api/generate \
     -H "Content-Type: application/json" \
     -d "$request")
 
