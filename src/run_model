@@ -45,26 +45,16 @@ fi
 
 echo "Prompt: $prompt" >&2
 
-# Build up the parts array for messages dynamically.
-parts=()
-
-if [[ -n "$system" ]]; then
-    parts+=("{\"role\": \"system\", \"content\": \"$system\"}")
+if [[ -z "$system" ]]; then
+    messages=(
+        "[{\"role\": \"user\", \"content\": \"$prompt\"}]"
+    )
+else
+    messages=(
+        "[{\"role\": \"system\", \"content\": \"$system\"},
+        {\"role\": \"user\", \"content\": \"$prompt\"}]"
+    )
 fi
-
-if [[ -n "$images" ]]; then
-    parts+=("{\"role\": \"images\", \"content\": \"$images\"}")
-fi
-
-parts+=("{\"role\": \"user\", \"content\": \"$prompt\"}")
-
-# Join the parts with commas and wrap with square brackets.
-json_messages="[$(
-    IFS=,
-    echo "${parts[*]}"
-)]"
-
-messages=("$json_messages")
 
 # Prepare the chat completion request
 request=$(
