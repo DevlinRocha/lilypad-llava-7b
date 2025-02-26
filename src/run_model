@@ -61,7 +61,7 @@ request=$(
     cat <<EOF
 {
   "model": "$MODEL_ID",
-  "prompt": $prompt,
+  "prompt": "$prompt",
   "stream": false,
 }
 EOF
