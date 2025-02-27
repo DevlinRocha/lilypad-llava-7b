@@ -2,16 +2,6 @@
 
 Run [Llava 7B](https://ollama.com/library/llava) on Lilypad Network.
 
-## Getting Started
-
-> Make sure that you Base64 encode your input.
-
-```sh
-export WEB3_PRIVATE_KEY=WEB3_PRIVATE_KEY
-
-lilypad run github.com/DevlinRocha/lilypad-llava-7b:v0.0.0 -i input=$(echo '{"prompt": "What is the correct answer to the trolley problem?", "temperature": "1.0"}' | base64 -w 0)
-```
-
 ### Valid Parameters and Default Values
 
 > \* === Required
